@@ -23,6 +23,7 @@ inline VkResult vkCreateSDLSurface(
   VkSurfaceKHR*                 pSurface)
 {
   SDL_SysWMinfo sysInfo;
+  SDL_VERSION(&sysInfo.version);
   if(!SDL_GetWindowWMInfo(pCreateInfo->pWindow, &sysInfo))
     return VK_ERROR_INITIALIZATION_FAILED;
   switch(sysInfo.subsystem)
