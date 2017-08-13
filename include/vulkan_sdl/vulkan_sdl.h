@@ -1,8 +1,6 @@
 #ifndef VULKAN_SDL_H_
 #define VULKAN_SDL_H_
 
-#include <cassert>
-
 #include <SDL2/SDL_syswm.h>
 #include <SDL2/SDL_video.h>
 #include <vulkan/vulkan.h>
