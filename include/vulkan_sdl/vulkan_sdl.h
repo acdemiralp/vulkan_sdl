@@ -25,7 +25,8 @@ inline VkResult vkCreateSDLSurface(
   VkSurfaceKHR*                 pSurface)
 {
   SDL_SysWMinfo sysInfo;
-  assert(SDL_GetWindowWMInfo(pCreateInfo->pWindow, &sysInfo) == SDL_TRUE);
+  if(!SDL_GetWindowWMInfo(pCreateInfo->pWindow, &sysInfo))
+    return VK_ERROR_INITIALIZATION_FAILED;
   switch(sysInfo.subsystem)
   {
 #if defined(VK_USE_PLATFORM_ANDROID_KHR) && defined(SDL_VIDEO_DRIVER_ANDROID)
