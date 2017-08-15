@@ -26,10 +26,8 @@ inline VkResult vkCreateSDLSurface(
   SDL_VERSION(&sysInfo.version);
   if(!SDL_GetWindowWMInfo(pCreateInfo->pWindow, &sysInfo))
     return VK_ERROR_INITIALIZATION_FAILED;
-  switch(sysInfo.subsystem)
-  {
-#if defined(VK_USE_PLATFORM_ANDROID_KHR) && defined(SDL_VIDEO_DRIVER_ANDROID)
-  case SDL_SYSWM_ANDROID:
+#if defined(VK_USE_PLATFORM_ANDROID_KHR)
+  if (sysInfo.subsystem == SDL_SYSWM_ANDROID)
   {
     VkAndroidSurfaceCreateInfoKHR createInfo {
       VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR,
@@ -39,8 +37,8 @@ inline VkResult vkCreateSDLSurface(
     return vkCreateAndroidSurfaceKHR(instance, &createInfo, pAllocator, pSurface);
   }
 #endif
-#if defined(VK_USE_PLATFORM_MIR_KHR) && defined(SDL_VIDEO_DRIVER_MIR)
-  case SDL_SYSWM_MIR:
+#if defined(VK_USE_PLATFORM_MIR_KHR)
+  if (sysInfo.subsystem == SDL_SYSWM_MIR)
   {
     VkMirSurfaceCreateInfoKHR createInfo {
       VK_STRUCTURE_TYPE_MIR_SURFACE_CREATE_INFO_KHR,
@@ -51,8 +49,8 @@ inline VkResult vkCreateSDLSurface(
     return vkCreateMirSurfaceKHR(instance, &createInfo, pAllocator, pSurface);
   }
 #endif
-#if defined(VK_USE_PLATFORM_WAYLAND_KHR) && defined(SDL_VIDEO_DRIVER_WAYLAND)
-  case SDL_SYSWM_WAYLAND:
+#if defined(VK_USE_PLATFORM_WAYLAND_KHR)
+  if (sysInfo.subsystem == SDL_SYSWM_WAYLAND)
   {
     VkWaylandSurfaceCreateInfoKHR createInfo{
       VK_STRUCTURE_TYPE_WAYLAND_SURFACE_CREATE_INFO_KHR,
@@ -63,8 +61,8 @@ inline VkResult vkCreateSDLSurface(
     return vkCreateWaylandSurfaceKHR(instance, &createInfo, pAllocator, pSurface);
   }
 #endif
-#if defined(VK_USE_PLATFORM_WIN32_KHR) && defined(SDL_VIDEO_DRIVER_WINDOWS)
-  case SDL_SYSWM_WINDOWS:
+#if defined(VK_USE_PLATFORM_WIN32_KHR)
+  if (sysInfo.subsystem == SDL_SYSWM_WINDOWS)
   {
     VkWin32SurfaceCreateInfoKHR createInfo{
       VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
@@ -79,8 +77,8 @@ inline VkResult vkCreateSDLSurface(
     return vkCreateWin32SurfaceKHR(instance, &createInfo, pAllocator, pSurface);
   }
 #endif
-#if defined(VK_USE_PLATFORM_XCB_KHR) && defined(SDL_VIDEO_DRIVER_X11)
-  case SDL_SYSWM_X11:
+#if defined(VK_USE_PLATFORM_XCB_KHR)
+  if (sysInfo.subsystem == SDL_SYSWM_X11)
   {
     VkXcbSurfaceCreateInfoKHR createInfo{
       VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR,
@@ -91,8 +89,8 @@ inline VkResult vkCreateSDLSurface(
     return vkCreateXcbSurfaceKHR(instance, &createInfo, pAllocator, pSurface);
   }
 #endif
-#if defined(VK_USE_PLATFORM_XLIB_KHR) && defined(SDL_VIDEO_DRIVER_X11)
-  case SDL_SYSWM_X11:
+#if defined(VK_USE_PLATFORM_XLIB_KHR)
+  if (sysInfo.subsystem == SDL_SYSWM_X11)
   {
     VkXlibSurfaceCreateInfoKHR createInfo{
       VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR,
@@ -103,9 +101,7 @@ inline VkResult vkCreateSDLSurface(
     return vkCreateXlibSurfaceKHR(instance, &createInfo, pAllocator, pSurface);
   }
 #endif
-  default:
-    return VK_ERROR_INITIALIZATION_FAILED;
-  }
+  return VK_ERROR_INITIALIZATION_FAILED;
 }
 
 #endif
